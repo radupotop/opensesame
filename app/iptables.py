@@ -40,6 +40,5 @@ class IPTables:
         """
         rule = iptc.Rule()
         rule.src = src_ip
-        # rule.mask = 32
         rule.target = iptc.Target(rule, iptc.Policy.ACCEPT)
         self.chain.insert_rule(rule)
