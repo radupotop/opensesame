@@ -1,2 +1,1 @@
 python-iptables==0.14.0
-PyYAML==5.3
