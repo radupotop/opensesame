@@ -13,12 +13,16 @@ class TestIPTables:
     def test_setup_chain(self):
         self.ipt.setup_chain()
 
+    def test_initial_chain_added(self):
         chain_names = [c.name for c in self.filter_table.chains]
 
         assert self.cfg.CHAIN in chain_names
-        # import ipdb; ipdb.set_trace()
 
-        input_rule0 = self.filter_table.chains[0].rules[0].matches[0]
+    def test_chain_policy(self):
+        assert self.filter_table.chains[0].name == 'INPUT'
+        assert self.filter_table.chains[0].get_policy().name == iptc.Policy.DROP
 
-        assert self.cfg.SSH_PORT == input_rule0.parameters['dport']
-        assert 'tcp' == input_rule0.name
+    def test_rule_match(self):
+        matches0 = self.filter_table.chains[0].rules[0].matches[0]
+        assert self.cfg.SSH_PORT == matches0.parameters['dport']
+        assert 'tcp' == matches0.name
