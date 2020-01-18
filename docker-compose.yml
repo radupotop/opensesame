@@ -4,3 +4,6 @@ services:
     build:
       context: ./
       dockerfile: ./docker/Dockerfile.test
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW

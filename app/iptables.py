@@ -1,5 +1,5 @@
 import iptc
-from config import ConfigReader
+from app.config import ConfigReader
 
 
 class IPTables:
