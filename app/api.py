@@ -19,5 +19,5 @@ def application(request):
         return Response('"ERR"', content_type='application/problem+json', status=400)
 
 
-if __name__ == '__main__':
-    run_simple('0.0.0.0', 8080, application)
+def run_main(cfg):
+    run_simple(cfg.API_HOST, int(cfg.API_PORT), application)
