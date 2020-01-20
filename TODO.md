@@ -1,5 +1,5 @@
 # Todo
 
-- Add API with Werkzeug.
-- This is going to need Docker to run tests.
-- Use INI files for config, get rid of yaml dep.
+- Token verification API with Werkzeug.
+- Minimal token db.
+- Method to insert allowed tokens from the CLI.
