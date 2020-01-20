@@ -1,8 +1,14 @@
+from ipaddress import ip_address
+
 import iptc
 from app.config import ConfigReader
 
 
 class IPTables:
+    """
+    Wrapper for the iptc class.
+    """
+
     def __init__(self, config: ConfigReader):
         self.cfg = config
 
@@ -39,6 +45,7 @@ class IPTables:
         Create rule to allow inbound traffic from <SRC IP>.
         """
         rule = iptc.Rule()
-        rule.src = src_ip
+        rule.src = str(ip_address(src_ip))
         rule.target = iptc.Target(rule, iptc.Policy.ACCEPT)
         self.chain.insert_rule(rule)
+        return True

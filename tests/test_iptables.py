@@ -1,4 +1,5 @@
 import iptc
+import pytest
 
 from app.config import ConfigReader
 from app.iptables import IPTables
@@ -26,3 +27,10 @@ class TestIPTables:
         matches0 = self.filter_table.chains[0].rules[0].matches[0]
         assert self.cfg.SSH_PORT == matches0.parameters['dport']
         assert 'tcp' == matches0.name
+
+    def test_add_good_rule(self):
+        assert self.ipt.add_rule('192.168.1.1')
+
+    def test_add_bad_rule(self):
+        with pytest.raises(ValueError):
+            self.ipt.add_rule('192.168.x.x')
