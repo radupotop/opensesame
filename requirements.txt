@@ -1,1 +1,2 @@
 python-iptables==0.14.0
+Werkzeug==0.16.0
