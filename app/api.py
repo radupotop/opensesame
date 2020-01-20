@@ -1,0 +1,23 @@
+import json
+from time import sleep
+
+from werkzeug.serving import run_simple
+from werkzeug.wrappers import Request, Response
+
+
+@Request.application
+def application(request):
+
+    token = request.args.get('token')
+    src_ip = request.host
+
+    sleep(3)
+
+    if token:
+        return Response('"OK"', content_type='application/json', status=200)
+    else:
+        return Response('"ERR"', content_type='application/problem+json', status=400)
+
+
+if __name__ == '__main__':
+    run_simple('0.0.0.0', 8080, application)
