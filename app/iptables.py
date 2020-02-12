@@ -14,7 +14,10 @@ class IPTables:
 
     def setup_chain(self):
         """
-        Create the initial chain.
+        Create the opensesame chain which will hold all the whitelist rules.
+        Append a rule to the INPUT chain to jump to Opensesame for all packets
+        matching the SSH destination port.
+        Finally set the INPUT chain policy to DROP.
         """
         filter_table = iptc.Table(iptc.Table.FILTER)
         self.chain = filter_table.create_chain(self.cfg.CHAIN)
@@ -35,7 +38,7 @@ class IPTables:
 
     def get_chain(self):
         """
-        Get target chain.
+        Get the opensesame chain.
         """
         filter_table = iptc.Table(iptc.Table.FILTER)
         self.chain = iptc.Chain(filter_table, self.cfg.CHAIN)
