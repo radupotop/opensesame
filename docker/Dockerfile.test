@@ -7,8 +7,6 @@ WORKDIR /app
 
 ARG PIP_INS="pip install --no-cache-dir"
 
-RUN $PIP_INS -r requirements.txt && \
-    $PIP_INS -r requirements-dev.txt && \
-    $PIP_INS -e .
+RUN $PIP_INS -r requirements.txt -r requirements.test.txt -e .
 
 CMD pytest -svv
