@@ -1,6 +1,6 @@
-import hashlib
-from typing import Tuple
 from datetime import datetime, timedelta
+from typing import Tuple
+from uuid import uuid4
 
 from app.model import Tokens, db
 
@@ -10,15 +10,15 @@ class Storage:
         self.conn = db.connect(reuse_if_open=True)
 
     def add_token(self, expiry_days: int = None) -> Tuple:
-        _hash = hashlib.sha256(str(datetime.utcnow()).encode()).hexdigest()
+        _value = str(uuid4())
         _expires = None
 
         if expiry_days:
             _expires = datetime.utcnow() + timedelta(days=expiry_days)
 
-        Tokens.insert(value=_hash, expires=_expires).execute()
+        Tokens.insert(value=_value, expires=_expires).execute()
 
-        return _hash, _expires
+        return _value, _expires
 
     def verify_token(self, value: str) -> bool:
         token = (
