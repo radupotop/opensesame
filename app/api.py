@@ -11,8 +11,6 @@ def application(request):
     token = request.args.get('token')
     src_ip = request.host
 
-    sleep(3)
-
     if token:
         return Response('"OK"', content_type='application/json', status=200)
     else:
