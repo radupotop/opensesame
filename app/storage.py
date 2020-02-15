@@ -2,7 +2,8 @@ from datetime import datetime, timedelta
 from typing import Tuple
 from uuid import uuid4
 
-from app.model import Tokens, db
+from app.db import db
+from app.model import Tokens
 
 
 class Storage:
