@@ -1,5 +1,11 @@
 # Todo
 
-- Token verification API with Werkzeug.
-- Minimal token db.
-- Method to insert allowed tokens from the CLI.
+- [ ] Token verification API with Werkzeug.
+- [ ] Method to insert / expire tokens from the CLI.
+
+----
+
+- [x] Add minimal API with Werkzeug.
+- [x] This is going to need Docker to run tests.
+- [x] Use INI files for config, get rid of yaml dep.
+- [x] Minimal token db.
