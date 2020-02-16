@@ -1,0 +1,8 @@
+.git
+.pytest_cache
+.vscode
+build/
+dist/
+venv/
+*.db
+*.egg-info
