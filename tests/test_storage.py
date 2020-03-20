@@ -26,7 +26,6 @@ class TestToken:
     def test_expired_token(self, new_token):
         token, expires = new_token
         assert not storage.verify_token(token)
-        assert not storage.expire_token(token)
 
 
 class TestTokenVerifyExpired:

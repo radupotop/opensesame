@@ -10,7 +10,8 @@ class IPTables:
     """
 
     def __init__(self, config: ConfigReader):
-        self.cfg = config
+        self.config = config
+        self.filter_table = iptc.Table(iptc.Table.FILTER)
 
     def setup_chain(self):
         """
@@ -19,19 +20,17 @@ class IPTables:
         matching the SSH destination port.
         Finally set the INPUT chain policy to DROP.
         """
-        filter_table = iptc.Table(iptc.Table.FILTER)
-        self.chain = filter_table.create_chain(self.cfg.CHAIN)
-
-        input_chain = iptc.Chain(filter_table, 'INPUT')
+        self.chain = self.filter_table.create_chain(self.config.CHAIN)
+        input_chain = iptc.Chain(self.filter_table, 'INPUT')
 
         input_rule = iptc.Rule()
         input_rule.protocol = 'tcp'
 
         input_match = iptc.Match(input_rule, 'tcp')
-        input_match.dport = str(self.cfg.SSH_PORT)
+        input_match.dport = str(self.config.SSH_PORT)
         input_rule.add_match(input_match)
 
-        input_rule.target = iptc.Target(input_rule, self.cfg.CHAIN)
+        input_rule.target = iptc.Target(input_rule, self.config.CHAIN)
 
         input_chain.append_rule(input_rule)
         input_chain.set_policy(iptc.Policy.DROP)
@@ -40,8 +39,7 @@ class IPTables:
         """
         Get the opensesame chain.
         """
-        filter_table = iptc.Table(iptc.Table.FILTER)
-        self.chain = iptc.Chain(filter_table, self.cfg.CHAIN)
+        self.chain = iptc.Chain(self.filter_table, self.config.CHAIN)
 
     def add_rule(self, src_ip: str):
         """
