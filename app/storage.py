@@ -50,3 +50,10 @@ class Storage:
             .execute()
         )
         return bool(token)
+
+    def delete_token(self, value: str) -> bool:
+        """
+        This is meant to run as a periodic cleanup function.
+        """
+        token = Tokens.delete().where(Tokens.value == value).execute()
+        return bool(token)

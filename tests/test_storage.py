@@ -27,6 +27,10 @@ class TestToken:
         token, expires = new_token
         assert not storage.verify_token(token)
 
+    def test_delete_token(self, new_token):
+        token, expires = new_token
+        assert storage.delete_token(token)
+
 
 class TestTokenVerifyExpired:
     @pytest.fixture(scope='class')
