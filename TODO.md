@@ -2,6 +2,7 @@
 
 - [ ] Token verification API with Werkzeug.
 - [ ] Method to insert / expire tokens from the CLI.
+- [ ] Use a cronjob for cleaning up entries, or create a poor man's scheduler using async coroutines.
 
 ----
 
