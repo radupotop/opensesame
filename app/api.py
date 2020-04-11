@@ -11,6 +11,9 @@ storage = Storage()
 
 @Request.application
 def application(request):
+    """
+    Define the WSGI application to be run by the server.
+    """
 
     token = request.args.get('token')
     src_ip = request.host
@@ -22,4 +25,7 @@ def application(request):
 
 
 def run_main(cfg):
+    """
+    Convenience method. Run a simple server and load the app.
+    """
     run_simple(cfg.API_HOST, int(cfg.API_PORT), application)
