@@ -34,3 +34,7 @@ class TestIPTables:
     def test_add_bad_rule(self):
         with pytest.raises(ValueError):
             self.ipt.add_rule('192.168.x.x')
+
+    def test_find_rule(self):
+        assert self.ipt.add_rule('192.168.1.2')
+        assert self.ipt.find_rule('192.168.1.2')
