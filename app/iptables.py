@@ -1,4 +1,5 @@
-from ipaddress import ip_address, ip_network
+from ipaddress import ip_address
+from typing import List
 
 import iptc
 from app.config import ConfigReader
@@ -12,6 +13,9 @@ class IPTables:
     def __init__(self, config: ConfigReader):
         self.config = config
         self.filter_table = iptc.Table(iptc.Table.FILTER)
+
+    def _parse_ip(self, ip_addr: str) -> str:
+        return str(ip_address(ip_addr))
 
     def setup_chain(self):
         """
@@ -41,27 +45,20 @@ class IPTables:
         """
         self.chain = iptc.Chain(self.filter_table, self.config.CHAIN)
 
-    def add_rule(self, src_ip: str):
+    def add_rule(self, src_ip: str) -> bool:
         """
         Create rule to allow inbound traffic from <SRC IP>.
         """
         rule = iptc.Rule()
-        rule.src = str(ip_address(src_ip))
+        rule.src = self._parse_ip(src_ip)
         rule.target = iptc.Target(rule, iptc.Policy.ACCEPT)
         self.chain.insert_rule(rule)
         return True
 
-    def _get_ip_address(self, net_addr):
+    def find_rule(self, src_ip: str) -> List:
         """
-        Get IP address from Network address.
+        Find a src IP address in the opensesame chain.
         """
-        return str(ip_network(net_addr).network_address)
-
-    def find_rule(self, ipaddr: str):
-        """
-        Find an IP address in the opensesame chain.
-        """
-        found = [
-            rule for rule in self.chain.rules if ipaddr == self._get_ip_address(rule.src)
-        ]
+        ipaddr = self._parse_ip(src_ip)
+        found = [rule for rule in self.chain.rules if ipaddr == rule.src.split('/')[0]]
         return found
