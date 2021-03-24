@@ -5,6 +5,8 @@ from werkzeug.serving import run_simple
 from werkzeug.wrappers import Request, Response
 
 from app.storage import Storage
+from app.config import ConfigReader
+from app.iptables import IPTables
 
 storage = Storage()
 
@@ -14,11 +16,15 @@ def application(request):
     """
     Define the WSGI application to be run by the server.
     """
+    cfg = ConfigReader()
+    ipt = IPTables(cfg)
 
     token = request.args.get('token')
     src_ip = request.host
 
     if token and storage.verify_token(token):
+        if not ipt.find_rule(src_ip):
+            ipt.add_rule(src_ip)
         return Response('"OK"', content_type='application/json', status=200)
     else:
         return Response('"ERR"', content_type='application/problem+json', status=400)
