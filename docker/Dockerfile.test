@@ -5,6 +5,7 @@ RUN apt-get update && apt-get -y install gcc iptables
 COPY . /app
 WORKDIR /app
 
-RUN pip install --no-cache-dir -e .[tests]
+RUN pip install -U pip && \
+    pip install --no-cache-dir -e .[tests]
 
 CMD pytest -svv
