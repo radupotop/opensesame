@@ -11,6 +11,13 @@ from app.iptables import IPTables
 storage = Storage()
 
 
+def build_response(message:str, code:int):
+    """
+    Build JSON response.
+    """
+    return Response(message, content_type='application/json', status=code)
+
+
 @Request.application
 def application(request):
     """
@@ -20,14 +27,15 @@ def application(request):
     ipt = IPTables(cfg)
 
     token = request.args.get('token')
-    src_ip = request.host
+    src_ip = str(request.host)
 
     if token and storage.verify_token(token):
         if not ipt.find_rule(src_ip):
             ipt.add_rule(src_ip)
-        return Response('"OK"', content_type='application/json', status=200)
+            return build_response(f'"Allowing inbound traffic from new IP: {src_ip}"', code=201)
+        return build_response(f'"Allowing inbound traffic from existing IP: {src_ip}"', code=200)
     else:
-        return Response('"ERR"', content_type='application/problem+json', status=400)
+        return build_response('"Could not verify access token."', code=403)
 
 
 def run_main(cfg):
