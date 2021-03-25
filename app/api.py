@@ -11,7 +11,7 @@ from app.iptables import IPTables
 storage = Storage()
 
 
-def build_response(message:str, code:int):
+def build_response(message: str, code: int):
     """
     Build JSON response.
     """
@@ -32,8 +32,12 @@ def application(request):
     if token and storage.verify_token(token):
         if not ipt.find_rule(src_ip):
             ipt.add_rule(src_ip)
-            return build_response(f'"Allowing inbound traffic from new IP: {src_ip}"', code=201)
-        return build_response(f'"Allowing inbound traffic from existing IP: {src_ip}"', code=200)
+            return build_response(
+                f'"Allowing inbound traffic from new IP: {src_ip}"', code=201
+            )
+        return build_response(
+            f'"Allowing inbound traffic from existing IP: {src_ip}"', code=200
+        )
     else:
         return build_response('"Could not verify access token."', code=403)
 

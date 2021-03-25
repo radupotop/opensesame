@@ -27,14 +27,7 @@ class IPTables:
         self.chain = self.filter_table.create_chain(self.config.CHAIN)
         input_chain = iptc.Chain(self.filter_table, 'INPUT')
 
-        input_rule = iptc.Rule()
-        input_rule.protocol = 'tcp'
-
-        input_match = iptc.Match(input_rule, 'tcp')
-        input_match.dport = str(self.config.SSH_PORT)
-        input_rule.add_match(input_match)
-
-        input_rule.target = iptc.Target(input_rule, self.config.CHAIN)
+        input_rule = self.allow_inbound_port(self.config.SSH_PORT, 'tcp')
 
         input_chain.append_rule(input_rule)
         input_chain.set_policy(iptc.Policy.DROP)
@@ -44,6 +37,21 @@ class IPTables:
         Get the opensesame chain.
         """
         self.chain = iptc.Chain(self.filter_table, self.config.CHAIN)
+
+    def allow_inbound_port(self, port: int, protocol: str = 'all') -> iptc.Rule:
+        """
+        Add inbound rule for port:protocol.
+        iptables -p tcp -m tcp --dport 22 -j opensesame
+        """
+        input_rule = iptc.Rule()
+        input_rule.protocol = protocol
+
+        rule_match = iptc.Match(input_rule, protocol)
+        rule_match.dport = str(port)
+        input_rule.add_match(rule_match)
+        input_rule.target = iptc.Target(input_rule, self.config.CHAIN)
+
+        return input_rule
 
     def add_rule(self, src_ip: str) -> bool:
         """
