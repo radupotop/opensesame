@@ -1,5 +1,5 @@
 from ipaddress import ip_address
-from typing import List, Tuple
+from typing import Tuple
 
 import iptc
 from app.config import ConfigReader
@@ -72,10 +72,10 @@ class IPTables:
         self.chain.insert_rule(rule)
         return True
 
-    def find_rule(self, src_ip: str) -> List:
+    def find_rule(self, src_ip: str) -> bool:
         """
         Find a src IP address in the opensesame chain.
         """
         ipaddr = self._parse_ip(src_ip)
         found = [rule for rule in self.chain.rules if ipaddr == rule.src.split('/')[0]]
-        return found
+        return bool(found)
