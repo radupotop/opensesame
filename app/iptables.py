@@ -24,21 +24,23 @@ class IPTables:
         matching the SSH destination port.
         Finally set the INPUT chain policy to DROP.
         """
-        self.chain = self.filter_table.create_chain(self.config.CHAIN)
+        self.chain = self.filter_table.create_chain(self.config.chain)
         input_chain = iptc.Chain(self.filter_table, 'INPUT')
 
-        input_rule = self.allow_inbound_port(self.config.SSH_PORT, 'tcp')
+        for entry in self.config.ports:
+            port, protocol = entry.split(':', 1)
+            input_rule = self.allow_inbound_port(port, protocol)
+            input_chain.append_rule(input_rule)
 
-        input_chain.append_rule(input_rule)
         input_chain.set_policy(iptc.Policy.DROP)
 
     def get_chain(self):
         """
         Get the opensesame chain.
         """
-        self.chain = iptc.Chain(self.filter_table, self.config.CHAIN)
+        self.chain = iptc.Chain(self.filter_table, self.config.chain)
 
-    def allow_inbound_port(self, port: int, protocol: str = 'all') -> iptc.Rule:
+    def allow_inbound_port(self, port: str, protocol: str = 'all') -> iptc.Rule:
         """
         Add inbound rule for port:protocol.
         iptables -p tcp -m tcp --dport 22 -j opensesame
@@ -49,7 +51,7 @@ class IPTables:
         rule_match = iptc.Match(input_rule, protocol)
         rule_match.dport = str(port)
         input_rule.add_match(rule_match)
-        input_rule.target = iptc.Target(input_rule, self.config.CHAIN)
+        input_rule.target = iptc.Target(input_rule, self.config.chain)
 
         return input_rule
 

@@ -1,0 +1,11 @@
+version: 1
+# The target chain stores allowed src IPs.
+chain: opensesame
+# Packets destined for any of these ports will trigger a jump to the
+# target chain.
+ports:
+  - 22:tcp
+  - 80:all
+  - 443:all
+api_host: '0.0.0.0'
+api_port: 8080

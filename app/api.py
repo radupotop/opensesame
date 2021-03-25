@@ -46,4 +46,4 @@ def run_main(cfg):
     """
     Convenience method. Run a simple server and load the app.
     """
-    run_simple(cfg.API_HOST, int(cfg.API_PORT), application)
+    run_simple(cfg.api_host, int(cfg.api_port), application)

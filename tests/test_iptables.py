@@ -17,7 +17,7 @@ class TestIPTables:
     def test_initial_chain_added(self):
         chain_names = [c.name for c in self.filter_table.chains]
 
-        assert self.cfg.CHAIN in chain_names
+        assert self.cfg.chain in chain_names
 
     def test_chain_policy(self):
         assert self.filter_table.chains[0].name == 'INPUT'
