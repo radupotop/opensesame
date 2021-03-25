@@ -1,5 +1,5 @@
 from ipaddress import ip_address
-from typing import List
+from typing import List, Tuple
 
 import iptc
 from app.config import ConfigReader
@@ -17,6 +17,13 @@ class IPTables:
     def _parse_ip(self, ip_addr: str) -> str:
         return str(ip_address(ip_addr))
 
+    def _parse_port(self, entry: str) -> Tuple[str, str]:
+        """
+        Parse a port:protocol entry from the config.
+        """
+        port, protocol = entry.split(':', 1)
+        return port, protocol
+
     def setup_chain(self):
         """
         Create the opensesame chain which will hold all the whitelist rules.
@@ -28,7 +35,7 @@ class IPTables:
         input_chain = iptc.Chain(self.filter_table, 'INPUT')
 
         for entry in self.config.ports:
-            port, protocol = entry.split(':', 1)
+            port, protocol = self._parse_port(entry)
             input_rule = self.allow_inbound_port(port, protocol)
             input_chain.append_rule(input_rule)
 

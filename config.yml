@@ -5,7 +5,9 @@ chain: opensesame
 # target chain.
 ports:
   - 22:tcp
-  - 80:all
-  - 443:all
+  - 80:tcp
+  - 80:udp
+  - 443:tcp
+  - 443:udp
 api_host: '0.0.0.0'
 api_port: 8080

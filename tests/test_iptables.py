@@ -25,8 +25,9 @@ class TestIPTables:
 
     def test_rule_match(self):
         matches0 = self.filter_table.chains[0].rules[0].matches[0]
-        assert self.cfg.SSH_PORT == matches0.parameters['dport']
-        assert 'tcp' == matches0.name
+        port, proto = self.ipt._parse_port(self.cfg.ports[0])
+        assert port == matches0.parameters['dport']
+        assert proto == matches0.name
 
     def test_add_good_rule(self):
         assert self.ipt.add_rule('192.168.1.1')
