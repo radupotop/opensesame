@@ -22,7 +22,7 @@ class Storage:
         Generate UUID4 tokens for now.
         An expiry_days value of 0 will render the token expired.
         """
-        _value = str(uuid4())
+        _value = uuid4()
         _expires = None
 
         if expiry_days:

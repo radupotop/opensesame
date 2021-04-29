@@ -14,5 +14,11 @@ class BaseModel(pw.Model):
 
 
 class Tokens(BaseModel):
-    value = pw.CharField(unique=True, null=False)
+    value = pw.UUIDField(unique=True, null=False)
     expires = pw.DateTimeField(null=True)
+
+
+class LastLogins(BaseModel):
+    timestamp = pw.DateTimeField(null=False)
+    srcip = pw.IPField(null=False)
+    token = pw.ForeignKeyField(Tokens, backref='lastlogins')
