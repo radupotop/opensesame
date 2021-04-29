@@ -12,7 +12,8 @@ class TestIPTables:
         self.filter_table = iptc.Table(iptc.Table.FILTER)
 
     def test_setup_chain(self):
-        self.ipt.setup_chain()
+        self.ipt.setup_whitelist_chain()
+        self.ipt.setup_input_chain()
 
     def test_initial_chain_added(self):
         chain_names = [c.name for c in self.filter_table.chains]
