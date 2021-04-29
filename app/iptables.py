@@ -2,7 +2,11 @@ from ipaddress import ip_address
 from typing import Tuple
 
 import iptc
+
 from app.config import ConfigReader
+from app.logging import get_logger
+
+log = get_logger(__name__)
 
 
 class IPTables:
@@ -38,8 +42,10 @@ class IPTables:
             port, protocol = self._parse_port(entry)
             input_rule = self.allow_inbound_port(port, protocol)
             input_chain.append_rule(input_rule)
+            log.info('Added INPUT chain rule for %s:%s', port, protocol)
 
         if self.config.set_input_policy_drop:
+            log.warning('Setting the INPUT chain Policy to DROP')
             input_chain.set_policy(iptc.Policy.DROP)
 
     def get_chain(self):
@@ -60,6 +66,7 @@ class IPTables:
         rule_match.dport = str(port)
         input_rule.add_match(rule_match)
         input_rule.target = iptc.Target(input_rule, self.config.chain)
+        log.debug('Built inbound rule for %s,%s', port, protocol)
 
         return input_rule
 
@@ -71,6 +78,7 @@ class IPTables:
         rule.src = self._parse_ip(src_ip)
         rule.target = iptc.Target(rule, iptc.Policy.ACCEPT)
         self.chain.insert_rule(rule)
+        log.info('Allowing inbound traffic from SRC IP: %s', src_ip)
         return True
 
     def find_rule(self, src_ip: str) -> bool:
