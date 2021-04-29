@@ -1,5 +1,6 @@
 # Todo
 
+- [ ] Method to flush the whitelist chain.
 - [ ] Accept config as CLI parameters.
 - [ ] Token verification API with Werkzeug.
 - [ ] Method to insert / expire tokens from the CLI.

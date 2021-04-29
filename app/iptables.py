@@ -65,7 +65,7 @@ class IPTables:
         Build an inbound rule for port:protocol which will jump to the whitelist chain.
 
         Example:
-            iptables -p tcp -m tcp --dport 22 -j opensesame
+            iptables -A INPUT -p tcp -m tcp --dport 22 -j opensesame
         """
         input_rule = iptc.Rule()
         input_rule.protocol = protocol
@@ -80,14 +80,17 @@ class IPTables:
 
     def add_rule(self, src_ip: str) -> bool:
         """
-        Create rule to allow inbound traffic from <SRC IP>.
+        Create rule to accept inbound traffic from <SRC IP>.
+
+        Example:
+            iptables -A opensesame -s SRC_IP -j ACCEPT
         """
         if not self.chain:
             get_chain()
         rule = iptc.Rule()
         rule.src = self._parse_ip(src_ip)
         rule.target = iptc.Target(rule, iptc.Policy.ACCEPT)
-        self.chain.insert_rule(rule)
+        self.chain.append_rule(rule)
         log.info('Allowing inbound traffic from SRC IP: %s', src_ip)
         return True
 
