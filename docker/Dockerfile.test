@@ -1,11 +1,19 @@
-FROM python:3.8.2-slim
+FROM python:3.9.4-slim
+
+ENV PYTHONUNBUFFERED=1
+# https://github.com/ldx/python-iptables/issues/37
+# ENV XTABLES_LIBDIR=/usr/lib/iptables
 
 RUN apt-get update && apt-get -y install gcc iptables
 
-COPY . /app
-WORKDIR /app
+WORKDIR /opt/app
+COPY requirements.txt /opt/app/
 
 RUN pip install -U pip && \
-    pip install --no-cache-dir -e .[tests]
+    pip install -r requirements.txt
+
+COPY . /opt/app
+
+RUN pip install --no-cache-dir -e .[tests]
 
 CMD pytest -svv
