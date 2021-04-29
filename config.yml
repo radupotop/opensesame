@@ -9,5 +9,8 @@ ports:
   - 80:udp
   - 443:tcp
   - 443:udp
+# Should the INPUT chain policy be set to DROP by default?
+set_input_policy_drop: true
+# API Host and Port
 api_host: '0.0.0.0'
 api_port: 8080

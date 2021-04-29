@@ -39,7 +39,8 @@ class IPTables:
             input_rule = self.allow_inbound_port(port, protocol)
             input_chain.append_rule(input_rule)
 
-        input_chain.set_policy(iptc.Policy.DROP)
+        if self.config.set_input_policy_drop:
+            input_chain.set_policy(iptc.Policy.DROP)
 
     def get_chain(self):
         """
