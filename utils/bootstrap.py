@@ -1,10 +1,10 @@
 from app.db import db
-from app.model import LastLogins, Tokens
+from app.model import AccessRequests, Tokens
 
 
 def bootstrap():
     db.connect(reuse_if_open=True)
-    db.create_tables([Tokens, LastLogins])
+    db.create_tables([Tokens, AccessRequests])
     db.close()
 
 
