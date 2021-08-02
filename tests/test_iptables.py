@@ -1,8 +1,9 @@
 import iptc
 import pytest
-
 from app.config import ConfigReader
+from app.exceptions import ParseIPError
 from app.iptables import IPTables
+from app.utils import parse_port
 
 
 class TestIPTables:
@@ -26,7 +27,7 @@ class TestIPTables:
 
     def test_rule_match(self):
         matches0 = self.filter_table.chains[0].rules[0].matches[0]
-        port, proto = self.ipt._parse_port(self.cfg.ports[0])
+        port, proto = parse_port(self.cfg.ports[0])
         assert port == matches0.parameters['dport']
         assert proto == matches0.name
 
@@ -34,7 +35,7 @@ class TestIPTables:
         assert self.ipt.add_rule('192.168.1.1')
 
     def test_add_bad_rule(self):
-        with pytest.raises(ValueError):
+        with pytest.raises(ParseIPError):
             self.ipt.add_rule('192.168.x.x')
 
     def test_find_rule(self):
