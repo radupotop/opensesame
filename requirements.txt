@@ -4,8 +4,6 @@
 #
 #    pip-compile
 #
-gunicorn==20.1.0
-    # via -r requirements.in
 peewee==3.14.4
     # via -r requirements.in
 python-iptables==1.0.0
@@ -14,6 +12,3 @@ pyyaml==5.4.1
     # via -r requirements.in
 werkzeug==2.0.1
     # via -r requirements.in
-
-# The following packages are considered to be unsafe in a requirements file:
-# setuptools

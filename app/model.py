@@ -22,4 +22,4 @@ class Tokens(BaseModel):
 class AccessRequests(BaseModel):
     timestamp = pw.DateTimeField(null=False)
     src_ip = pw.IPField(null=False)
-    token = pw.ForeignKeyField(Tokens, backref='accessrequests')
+    token = pw.ForeignKeyField(Tokens, null=False, backref='accessrequests')

@@ -59,12 +59,12 @@ class Storage:
         token = Tokens.delete().where(Tokens.value == value).execute()
         return bool(token)
 
-    def log_access_request(self, src_ip: str, token: Tokens):
+    def log_access_request(self, src_ip: str, token_id: int):
         """
         Add an entry to the access request log.
         """
         return AccessRequests.insert(
             timestamp=datetime.utcnow(),
             src_ip=parse_ip(src_ip),
-            token=token,
+            token=token_id,
         ).execute()

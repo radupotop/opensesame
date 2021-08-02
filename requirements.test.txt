@@ -1,4 +1,4 @@
-black==20.8b1
+black==21.7b0
 freezegun==0.3.14
 pytest==5.4.1
 pytest-black==0.3.8
