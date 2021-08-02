@@ -1,7 +1,8 @@
 import re
 from ipaddress import ip_address
-from logging import get_logger
 from typing import Optional, Tuple
+
+from app.logging import get_logger
 
 log = get_logger(__name__)
 

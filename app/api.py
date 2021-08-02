@@ -6,9 +6,9 @@ from werkzeug.wrappers import Request, Response
 
 from app.config import ConfigReader
 from app.iptables import IPTables
+from app.logging import get_logger
 from app.storage import Storage
 from app.utils import is_valid_uuid4, parse_ip
-from logging import get_logger
 
 storage = Storage()
 log = get_logger(__name__)
