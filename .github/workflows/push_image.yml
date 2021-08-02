@@ -1,4 +1,4 @@
-name: Push image to GH container registry
+name: Push image to GH container registry (Manual)
 
 on:
   workflow_dispatch:
@@ -10,7 +10,6 @@ env:
 jobs:
   push_image:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push'
 
     steps:
       - uses: actions/checkout@v2
