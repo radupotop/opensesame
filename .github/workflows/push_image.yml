@@ -1,34 +1,14 @@
-name: Tests with Docker
+name: Push image to GH container registry
 
 on:
-  push:
-    branches:
-      - master
-    tags:
-      - v*
-  pull_request:
+  workflow_dispatch:
+    branches: [ master ]
 
 env:
   IMAGE_NAME: opensesame
 
 jobs:
-  # Run tests.
-  # See also https://docs.docker.com/docker-hub/builds/automated-testing/
-  test:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Run tests
-        run: |
-          docker-compose build test
-          docker-compose run test
-
-  push:
-    # Ensure test job passes before pushing image.
-    needs: test
-
+  push_image:
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
 
