@@ -3,7 +3,8 @@ from typing import Tuple
 from uuid import uuid4
 
 from app.db import db
-from app.model import Tokens
+from app.model import AccessRequests, Tokens
+from app.utils import parse_ip
 
 
 class Storage:
@@ -32,13 +33,13 @@ class Storage:
 
         return _value, _expires
 
-    def verify_token(self, value: str) -> bool:
+    def verify_token(self, value: str) -> Tuple[bool, int]:
         token = (
             Tokens.select()
             .where(Tokens.value == value)
             .where((Tokens.expires == None) | (Tokens.expires > datetime.utcnow()))
         )
-        return token.exists()
+        return token.exists(), token.id
 
     def expire_token(self, value: str) -> bool:
         """
@@ -57,3 +58,13 @@ class Storage:
         """
         token = Tokens.delete().where(Tokens.value == value).execute()
         return bool(token)
+
+    def log_access_request(self, src_ip: str, token: Tokens):
+        """
+        Add an entry to the access request log.
+        """
+        return AccessRequests.insert(
+            timestamp=datetime.utcnow(),
+            src_ip=parse_ip(src_ip),
+            token=token,
+        ).execute()

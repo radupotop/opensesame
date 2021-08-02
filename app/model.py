@@ -16,10 +16,10 @@ class BaseModel(pw.Model):
 class Tokens(BaseModel):
     value = pw.UUIDField(unique=True, null=False)
     expires = pw.DateTimeField(null=True)
-    description = pw.CharField(null=True)
+    description = pw.CharField(null=True)  # Can be an external_id
 
 
 class AccessRequests(BaseModel):
     timestamp = pw.DateTimeField(null=False)
-    srcip = pw.IPField(null=False)
+    src_ip = pw.IPField(null=False)
     token = pw.ForeignKeyField(Tokens, backref='accessrequests')

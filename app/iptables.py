@@ -5,6 +5,7 @@ import iptc
 
 from app.config import ConfigReader
 from app.logging import get_logger
+from app.utils import parse_ip, parse_port
 
 log = get_logger(__name__)
 
@@ -17,16 +18,6 @@ class IPTables:
     def __init__(self, config: ConfigReader):
         self.config = config
         self.filter_table = iptc.Table(iptc.Table.FILTER)
-
-    def _parse_ip(self, ip_addr: str) -> str:
-        return str(ip_address(ip_addr))
-
-    def _parse_port(self, entry: str) -> Tuple[str, str]:
-        """
-        Parse a port:protocol entry from the config.
-        """
-        port, protocol = entry.split(':', 1)
-        return port, protocol
 
     def setup_whitelist_chain(self):
         """
@@ -45,7 +36,7 @@ class IPTables:
         input_chain = iptc.Chain(self.filter_table, 'INPUT')
 
         for entry in self.config.ports:
-            port, protocol = self._parse_port(entry)
+            port, protocol = parse_port(entry)
             input_rule = self.build_inbound_rule(port, protocol)
             input_chain.append_rule(input_rule)
             log.info('Added INPUT chain rule for %s:%s', port, protocol)
@@ -88,7 +79,7 @@ class IPTables:
         if not self.chain:
             get_chain()
         rule = iptc.Rule()
-        rule.src = self._parse_ip(src_ip)
+        rule.src = parse_ip(src_ip)
         rule.target = iptc.Target(rule, iptc.Policy.ACCEPT)
         self.chain.append_rule(rule)
         log.info('Allowing inbound traffic from SRC IP: %s', src_ip)
@@ -98,6 +89,6 @@ class IPTables:
         """
         Find a src IP address in the opensesame chain.
         """
-        ipaddr = self._parse_ip(src_ip)
+        ipaddr = parse_ip(src_ip)
         found = [rule for rule in self.chain.rules if ipaddr == rule.src.split('/')[0]]
         return bool(found)
