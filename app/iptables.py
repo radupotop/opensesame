@@ -91,4 +91,5 @@ class IPTables:
         """
         ipaddr = parse_ip(src_ip)
         found = [rule for rule in self.chain.rules if ipaddr == rule.src.split('/')[0]]
+        log.info('Found rule for IP: %s, %s', src_ip, bool(found))
         return bool(found)

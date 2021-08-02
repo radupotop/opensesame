@@ -46,9 +46,11 @@ def application(request):
         if not ipt.find_rule(src_ip):
             ipt.add_rule(src_ip)
             storage.log_access_request(src_ip, token_id)
+            log.info('Allowing inbound traffic from new IP: %s', src_ip)
             return build_response(
                 f'"Allowing inbound traffic from new IP: {src_ip}"', code=201
             )
+        log.info('Allowing inbound traffic from existing IP: %s', src_ip)
         return build_response(
             f'"Allowing inbound traffic from existing IP: {src_ip}"', code=200
         )
