@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from typing import Tuple
+from typing import Tuple, Optional
 from uuid import uuid4
 
 from app.db import db
@@ -33,13 +33,13 @@ class Storage:
 
         return _value, _expires
 
-    def verify_token(self, value: str) -> Tuple[bool, int]:
+    def verify_token(self, value: str) -> Optional[Tokens]:
         token = (
             Tokens.select()
             .where(Tokens.value == value)
             .where((Tokens.expires == None) | (Tokens.expires > datetime.utcnow()))
         )
-        return token.exists(), token.id
+        return token.first()  # get_or_none doesn't work on SelectQuery
 
     def expire_token(self, value: str) -> bool:
         """
@@ -63,8 +63,9 @@ class Storage:
         """
         Add an entry to the access request log.
         """
-        return AccessRequests.insert(
+        success = AccessRequests.insert(
             timestamp=datetime.utcnow(),
             src_ip=parse_ip(src_ip),
             token=token_id,
         ).execute()
+        return bool(success)

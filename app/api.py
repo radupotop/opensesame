@@ -40,12 +40,12 @@ def application(request):
         log.warning('Invalid Token <%s> or SRC IP <%s>', token, src_ip)
         return bad_token()
 
-    token_is_valid, token_id = storage.verify_token(token)
+    token_instance = storage.verify_token(token)
 
-    if token_is_valid:
+    if token_instance:
         if not ipt.find_rule(src_ip):
             ipt.add_rule(src_ip)
-            storage.log_access_request(src_ip, token_id)
+            storage.log_access_request(src_ip, token_instance)
             log.info('Allowing inbound traffic from new IP: %s', src_ip)
             return build_response(
                 f'"Allowing inbound traffic from new IP: {src_ip}"', code=201
