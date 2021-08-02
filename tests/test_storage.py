@@ -1,10 +1,10 @@
 from datetime import datetime, timedelta
+
 import pytest
-
 from app.storage import Storage
-from utils.bootstrap import bootstrap
+from utils.bootstrap import create_db
 
-bootstrap()
+create_db()
 storage = Storage()
 
 

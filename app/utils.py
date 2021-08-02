@@ -1,5 +1,5 @@
+import re
 from ipaddress import ip_address
-from re import compile
 
 UUID_REGEX = re.compile('^\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$')
 
