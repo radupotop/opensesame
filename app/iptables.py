@@ -105,5 +105,6 @@ class IPTables:
         if found_rules:
             for rule in found_rules:
                 self.chain.delete_rule(rule)
+            log.info('Deleted %s rules for IP: %s', len(found_rules), src_ip)
             return True
         return False

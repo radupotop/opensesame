@@ -41,3 +41,10 @@ class TestIPTables:
     def test_has_rule(self):
         assert self.ipt.add_rule('192.168.1.2')
         assert self.ipt.has_rule('192.168.1.2')
+
+    def test_delete_rule(self):
+        ip = '192.168.1.19'
+        assert self.ipt.add_rule(ip)
+        assert self.ipt.has_rule(ip)
+        assert self.ipt.delete_rule(ip)
+        assert not self.ipt.has_rule(ip)
