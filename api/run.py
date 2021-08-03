@@ -1,6 +1,7 @@
-from config import ConfigReader
-from iptables import IPTables
-from api import run_main
+from app.config import ConfigReader
+from app.iptables import IPTables
+
+from api.api import run_main
 
 if __name__ == '__main__':
     cfg = ConfigReader()
