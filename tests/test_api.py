@@ -1,7 +1,5 @@
 import pytest
 from api.api import application
-from app.config import ConfigReader
-from app.iptables import IPTables
 from app.storage import Storage
 from utils.bootstrap import create_db
 from werkzeug.test import Client
@@ -17,8 +15,6 @@ class TestAPI:
 
     def setup_class(self):
         self.client = Client(application)
-        # self.cfg = ConfigReader()
-        # self.ipt = IPTables(self.cfg)
 
     def test_valid_request(self, new_token):
         token_value, expires = new_token

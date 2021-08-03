@@ -1,4 +1,3 @@
-from ipaddress import ip_address
 from typing import List, Tuple
 
 import iptc
