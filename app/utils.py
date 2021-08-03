@@ -31,9 +31,9 @@ def is_valid_uuid4(token: str) -> bool:
     return bool(UUID4_REGEX.findall(str(token)))
 
 
-def is_valid_ip(ip_addr: str) -> Optional[str]:
+def is_valid_ip(ip_addr: str) -> bool:
     try:
         resp_ip = parse_ip(ip_addr)
     except ParseIPError:
-        resp_ip = None
-    return resp_ip
+        resp_ip = False
+    return bool(resp_ip)
