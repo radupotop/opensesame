@@ -85,11 +85,22 @@ class IPTables:
         log.info('Allowing inbound traffic from SRC IP: %s', src_ip)
         return True
 
+    def _lookup_rules(self, src_ip: str):
+        ipaddr = parse_ip(src_ip)
+        return [rule for rule in self.chain.rules if ipaddr == rule.src.split('/')[0]]
+
     def find_rule(self, src_ip: str) -> bool:
         """
         Find a src IP address in the opensesame chain.
         """
-        ipaddr = parse_ip(src_ip)
-        found = [rule for rule in self.chain.rules if ipaddr == rule.src.split('/')[0]]
-        log.info('Found rule for IP: %s, %s', src_ip, bool(found))
-        return bool(found)
+        found = bool(_lookup_rules(src_ip))
+        log.info('Found rule for IP: %s, %s', src_ip, found)
+        return found
+
+    def delete_rule(self, src_ip: str) -> bool:
+        found_rules = _lookup_rules(src_ip)
+        if found_rules:
+            for rule in found_rules:
+                self.chain.delete_rule(rule)
+            return True
+        return False
