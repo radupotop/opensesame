@@ -1,5 +1,5 @@
 from ipaddress import ip_address
-from typing import Tuple
+from typing import List, Tuple
 
 import iptc
 
@@ -85,11 +85,11 @@ class IPTables:
         log.info('Allowing inbound traffic from SRC IP: %s', src_ip)
         return True
 
-    def _lookup_rules(self, src_ip: str):
+    def _lookup_rules(self, src_ip: str) -> List[iptc.Rule]:
         ipaddr = parse_ip(src_ip)
         return [rule for rule in self.chain.rules if ipaddr == rule.src.split('/')[0]]
 
-    def find_rule(self, src_ip: str) -> bool:
+    def has_rule(self, src_ip: str) -> bool:
         """
         Find a src IP address in the opensesame chain.
         """
@@ -98,6 +98,9 @@ class IPTables:
         return found
 
     def delete_rule(self, src_ip: str) -> bool:
+        """
+        Drop a rule from the opensesame chain.
+        """
         found_rules = _lookup_rules(src_ip)
         if found_rules:
             for rule in found_rules:

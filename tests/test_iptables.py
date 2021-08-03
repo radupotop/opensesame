@@ -38,6 +38,6 @@ class TestIPTables:
         with pytest.raises(ParseIPError):
             self.ipt.add_rule('192.168.x.x')
 
-    def test_find_rule(self):
+    def test_has_rule(self):
         assert self.ipt.add_rule('192.168.1.2')
-        assert self.ipt.find_rule('192.168.1.2')
+        assert self.ipt.has_rule('192.168.1.2')

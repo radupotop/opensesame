@@ -43,7 +43,7 @@ def application(request):
     token_instance = storage.verify_token(token)
 
     if token_instance:
-        if not ipt.find_rule(src_ip):
+        if not ipt.has_rule(src_ip):
             ipt.add_rule(src_ip)
             storage.log_access_request(src_ip, token_instance)
             log.info('Allowing inbound traffic from new IP: %s', src_ip)
