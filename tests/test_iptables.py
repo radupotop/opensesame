@@ -48,3 +48,4 @@ class TestIPTables:
         assert self.ipt.has_rule(ip)
         assert self.ipt.delete_rule(ip)
         assert not self.ipt.has_rule(ip)
+        assert not self.ipt.delete_rule(ip)
