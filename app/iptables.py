@@ -102,9 +102,8 @@ class IPTables:
         Drop a rule from the opensesame chain.
         """
         found_rules = self._lookup_rules(src_ip)
-        if found_rules:
-            for rule in found_rules:
-                self.chain.delete_rule(rule)
-            log.info('Deleted %s rules for IP: %s', len(found_rules), src_ip)
-            return True
-        return False
+        for rule in found_rules:
+            self.chain.delete_rule(rule)
+        count = len(found_rules)
+        log.info('Deleted %s rules for IP: %s', count, src_ip)
+        return bool(count)
