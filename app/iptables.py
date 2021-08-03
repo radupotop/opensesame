@@ -93,7 +93,7 @@ class IPTables:
         """
         Find a src IP address in the opensesame chain.
         """
-        found = bool(_lookup_rules(src_ip))
+        found = bool(self._lookup_rules(src_ip))
         log.info('Found rule for IP: %s, %s', src_ip, found)
         return found
 
@@ -101,7 +101,7 @@ class IPTables:
         """
         Drop a rule from the opensesame chain.
         """
-        found_rules = _lookup_rules(src_ip)
+        found_rules = self._lookup_rules(src_ip)
         if found_rules:
             for rule in found_rules:
                 self.chain.delete_rule(rule)
