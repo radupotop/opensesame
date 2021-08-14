@@ -1,4 +1,5 @@
 import re
+import socket
 from ipaddress import ip_address
 from typing import Optional, Tuple
 
@@ -17,6 +18,14 @@ def parse_ip(ip_addr: str) -> str:
     except ValueError as e:
         raise ParseIPError(e)
     return resp_ip
+
+
+def resolve_hostname(hostname: str) -> str:
+    try:
+        resolved_ip = socket.gethostbyname(hostname)
+    except socket.error as e:
+        raise ParseIPError(e)
+    return resolved_ip
 
 
 def parse_port(entry: str) -> Tuple[str, str]:
