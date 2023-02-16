@@ -4,11 +4,13 @@
 #
 #    pip-compile
 #
+markupsafe==2.1.2
+    # via werkzeug
 peewee==3.14.4
     # via -r requirements.in
 python-iptables==1.0.0
     # via -r requirements.in
 pyyaml==5.4.1
     # via -r requirements.in
-werkzeug==2.0.1
+werkzeug==2.2.3
     # via -r requirements.in
