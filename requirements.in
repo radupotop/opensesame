@@ -2,4 +2,4 @@
 peewee==3.14.4
 python-iptables==1.0.0
 PyYAML==5.4.1
-Werkzeug==2.2.3
+Werkzeug==3.0.1
