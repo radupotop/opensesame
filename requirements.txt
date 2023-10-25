@@ -12,5 +12,5 @@ python-iptables==1.0.0
     # via -r requirements.in
 pyyaml==5.4.1
     # via -r requirements.in
-werkzeug==2.2.3
+werkzeug==3.0.1
     # via -r requirements.in
