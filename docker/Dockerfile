@@ -13,5 +13,6 @@ COPY --from=builder /wheels /wheels
 RUN pip install /wheels/*
 COPY . /app
 WORKDIR /app
-CMD python utils/bootstrap.py && python app/run.py
+RUN pip install .
+CMD python utils/bootstrap.py && python api/run.py
 EXPOSE 8080
