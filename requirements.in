@@ -1,5 +1,5 @@
-# gunicorn==20.1.0  # Optional
-peewee==3.14.4
-python-iptables==1.0.0
-PyYAML==5.4.1
-Werkzeug==2.2.3
+gunicorn  # Optional - for running as WSGI app
+peewee
+python-iptables
+pyyaml
+werkzeug

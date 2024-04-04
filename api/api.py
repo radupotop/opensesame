@@ -1,6 +1,3 @@
-import json
-from time import sleep
-
 from werkzeug.serving import run_simple
 from werkzeug.wrappers import Request, Response
 
@@ -8,7 +5,7 @@ from app.config import ConfigReader
 from app.iptables import IPTables
 from app.logging import get_logger
 from app.storage import Storage
-from app.utils import is_valid_ip, is_valid_uuid4, resolve_hostname
+from app.utils import is_valid_ip, is_valid_uuid, parse_host, resolve_hostname
 
 storage = Storage()
 log = get_logger(__name__)
@@ -34,9 +31,10 @@ def application(request):
     ipt = IPTables(cfg)
 
     token = request.args.get('token')
-    src_ip = resolve_hostname(request.host)
+    hostname, _ = parse_host(request.host)
+    src_ip = resolve_hostname(hostname)
 
-    if not (is_valid_uuid4(token) and is_valid_ip(src_ip)):
+    if not (is_valid_uuid(token) and is_valid_ip(src_ip)):
         log.warning('Invalid Token <%s> or SRC IP <%s>', token, src_ip)
         return bad_token()
 
@@ -64,4 +62,5 @@ def run_main(cfg):
     """
     Convenience method. Run a simple server and load the app.
     """
+    log.info('Started OpenSesame %s:%s', cfg.api_host, cfg.api_port)
     run_simple(cfg.api_host, int(cfg.api_port), application)
