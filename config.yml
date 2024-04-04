@@ -1,6 +1,6 @@
 version: 1
 # The target chain stores allowed src IPs.
-chain: opensesame
+chain: OPENSESAME
 # Packets destined for any of these ports will trigger a jump to the
 # target chain.
 ports:
