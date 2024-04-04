@@ -5,7 +5,7 @@ from app.config import ConfigReader
 from app.iptables import IPTables
 from app.logging import get_logger
 from app.storage import Storage
-from app.utils import is_valid_ip, is_valid_uuid, resolve_hostname
+from app.utils import is_valid_ip, is_valid_uuid, parse_host, resolve_hostname
 
 storage = Storage()
 log = get_logger(__name__)
@@ -31,7 +31,8 @@ def application(request):
     ipt = IPTables(cfg)
 
     token = request.args.get('token')
-    src_ip = resolve_hostname(request.host.split(':')[0])
+    hostname, _ = parse_host(request.host)
+    src_ip = resolve_hostname(hostname)
 
     if not (is_valid_uuid(token) and is_valid_ip(src_ip)):
         log.warning('Invalid Token <%s> or SRC IP <%s>', token, src_ip)

@@ -34,12 +34,11 @@ def parse_port(entry: str) -> Tuple[str, str]:
 
 
 def is_valid_uuid(token: str) -> bool:
-    isvalid = False
     try:
         UUID(token)
         isvalid = True
-    except ValueError:
-        pass
+    except (ValueError, TypeError):
+        isvalid = False
     return isvalid
 
 
@@ -49,3 +48,6 @@ def is_valid_ip(ip_addr: str) -> bool:
     except ParseIPError:
         resp_ip = False
     return bool(resp_ip)
+
+
+parse_host = parse_port

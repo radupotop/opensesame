@@ -1,4 +1,4 @@
-gunicorn  # Optional for running as WSGI app
+gunicorn  # Optional - for running as WSGI app
 peewee
 python-iptables
 pyyaml
