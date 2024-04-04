@@ -34,5 +34,5 @@ class TestAPI:
         assert response.status_code == 200
 
     def test_bad_request(self):
-        response = self.client.get(f'/?token=BADTOKEN')
+        response = self.client.get('/?token=BADTOKEN')
         assert response.status_code == 403

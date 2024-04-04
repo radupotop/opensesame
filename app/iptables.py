@@ -76,7 +76,7 @@ class IPTables:
             iptables -A opensesame -s SRC_IP -j ACCEPT
         """
         if not self.chain:
-            get_chain()
+            self.get_chain()
         rule = iptc.Rule()
         rule.src = parse_ip(src_ip)
         rule.target = iptc.Target(rule, iptc.Policy.ACCEPT)
