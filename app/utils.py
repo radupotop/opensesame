@@ -1,15 +1,12 @@
-import re
 import socket
 from ipaddress import ip_address
-from typing import Optional, Tuple
+from typing import Tuple
+from uuid import UUID
 
 from app.exceptions import ParseIPError
 from app.logging import get_logger
 
 log = get_logger(__name__)
-
-
-UUID4_REGEX = re.compile(r'^\w{8}-\w{4}-\w{4}-\w{4}-\w{12}$')
 
 
 def parse_ip(ip_addr: str) -> str:
@@ -36,8 +33,14 @@ def parse_port(entry: str) -> Tuple[str, str]:
     return port, protocol
 
 
-def is_valid_uuid4(token: str) -> bool:
-    return bool(UUID4_REGEX.findall(str(token)))
+def is_valid_uuid(token: str) -> bool:
+    isvalid = False
+    try:
+        UUID(token)
+        isvalid = True
+    except ValueError:
+        pass
+    return isvalid
 
 
 def is_valid_ip(ip_addr: str) -> bool:
