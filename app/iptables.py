@@ -75,7 +75,7 @@ class IPTables:
         Example:
             iptables -A opensesame -s SRC_IP -j ACCEPT
         """
-        if not self.chain:
+        if not hasattr(self, 'chain'):
             self.get_chain()
         rule = iptc.Rule()
         rule.src = parse_ip(src_ip)
