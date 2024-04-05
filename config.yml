@@ -1,8 +1,8 @@
 version: 1
-# The target chain stores allowed src IPs.
+# The whitelist chain stores allowed src IPs.
 chain: OPENSESAME
 # Packets destined for any of these ports will trigger a jump to the
-# target chain.
+# whitelist chain.
 ports:
   - 22:tcp
   - 80:tcp
