@@ -14,7 +14,7 @@ class TestIPTables:
 
     def test_setup_chain(self):
         self.ipt.setup_whitelist_chain()
-        self.ipt.setup_input_chain()
+        self.ipt.setup_input_chain(set_policy_drop=True)
 
     def test_initial_chain_added(self):
         chain_names = [c.name for c in self.filter_table.chains]

@@ -14,7 +14,7 @@ def create_chains():
     cfg = ConfigReader()
     ipt = IPTables(cfg)
     ipt.setup_whitelist_chain()
-    ipt.setup_input_chain()
+    ipt.setup_input_chain(set_policy_drop=cfg.set_input_policy_drop)
 
 
 if __name__ == '__main__':

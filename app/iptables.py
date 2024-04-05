@@ -26,7 +26,7 @@ class IPTables:
         log.info('Creating the whitelist chain: %s', self.config.chain)
         self.chain = self.filter_table.create_chain(self.config.chain)
 
-    def setup_input_chain(self):
+    def setup_input_chain(self, set_policy_drop=False):
         """
         Append a rule to the INPUT chain to jump to the whitelist chain for
         all the packets matching the destination ports & protocols.
@@ -40,7 +40,7 @@ class IPTables:
             input_chain.append_rule(input_rule)
             log.info('Added INPUT chain rule for %s:%s', port, protocol)
 
-        if self.config.set_input_policy_drop:
+        if set_policy_drop:
             log.warning('Setting the INPUT chain Policy to DROP')
             input_chain.set_policy(iptc.Policy.DROP)
 
