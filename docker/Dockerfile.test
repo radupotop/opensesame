@@ -1,16 +1,17 @@
-FROM python:3.9.4-slim
+FROM python:3.11.8-slim AS base
+RUN apt-get update && apt-get -y install iptables
+
+FROM base AS test
+RUN apt-get -y install gcc
 
 ENV PYTHONUNBUFFERED=1
 # https://github.com/ldx/python-iptables/issues/37
 # ENV XTABLES_LIBDIR=/usr/lib/iptables
 
-RUN apt-get update && apt-get -y install gcc iptables
-
 WORKDIR /opt/app
-COPY requirements.txt /opt/app/
+COPY requirements.test.txt /opt/app/
 
-RUN pip install -U pip && \
-    pip install -r requirements.txt
+RUN pip install -r requirements.test.txt
 
 COPY . /opt/app
 
