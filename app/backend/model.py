@@ -14,7 +14,7 @@ class BaseModel(pw.Model):
 
 
 class Tokens(BaseModel):
-    value = pw.UUIDField(unique=True, null=False)
+    value = pw.UUIDField(unique=True)
     expires = pw.DateTimeField(null=True)
     reason = pw.CharField(null=True)  # Can be an external_id
 
@@ -30,6 +30,6 @@ class AccessRequests(BaseModel):
     The users are granted access again based on a valid token.
     """
 
-    src_ip = pw.IPField(null=False)
-    token = pw.ForeignKeyField(Tokens, null=False, backref='accessrequests')
+    src_ip = pw.IPField()
+    token = pw.ForeignKeyField(Tokens, backref='accessrequests')
     was_scrubbed = pw.BooleanField(default=False)
