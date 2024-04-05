@@ -20,8 +20,7 @@ class Storage:
 
     def add_token(self, expiry_days: int = None) -> Tuple:
         """
-        Generate UUID4 tokens for now.
-        An expiry_days value of 0 will render the token expired.
+        Generate UUID4 tokens.
         """
         _value = uuid4()
         _expires = None
@@ -37,7 +36,7 @@ class Storage:
         token = (
             Tokens.select()
             .where(Tokens.value == value)
-            .where((Tokens.expires == None) | (Tokens.expires > datetime.utcnow()))
+            .where((Tokens.expires.is_null()) | (Tokens.expires > datetime.utcnow()))
         )
         return token.first()  # get_or_none doesn't work on SelectQuery
 
