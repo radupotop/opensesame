@@ -8,6 +8,8 @@ services:
       - NET_RAW
     ports:
       - 8080:8080
+    volumes:
+      - ./db:/db
   test:
     build:
       context: ./

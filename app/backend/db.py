@@ -1,3 +1,3 @@
 from peewee import SqliteDatabase
 
-db = SqliteDatabase('tokens.db')
+db = SqliteDatabase('/db/tokens.db')
