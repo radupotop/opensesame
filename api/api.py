@@ -32,7 +32,7 @@ def application(request):
 
     token = request.args.get('token')
     hostname, _ = parse_host(request.host)
-    src_ip = resolve_hostname(hostname)
+    src_ip = resolve_hostname(request.remote_addr or hostname)
 
     if not (is_valid_uuid(token) and is_valid_ip(src_ip)):
         log.warning('Invalid Token <%s> or SRC IP <%s>', token, src_ip)
