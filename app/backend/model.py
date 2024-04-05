@@ -16,9 +16,20 @@ class BaseModel(pw.Model):
 class Tokens(BaseModel):
     value = pw.UUIDField(unique=True, null=False)
     expires = pw.DateTimeField(null=True)
-    description = pw.CharField(null=True)  # Can be an external_id
+    reason = pw.CharField(null=True)  # Can be an external_id
 
 
 class AccessRequests(BaseModel):
+    """
+    Scrubbing means an entry was removed from the whitelist chain,
+    so access for the user was revoked on that specific IP.
+    This is essential to do regularly in order to not poke too many holes in
+    the firewall, since users can roam and change IPs a lot.
+    The frequency of scrubbing can be determined independently by each sysadmin
+    according to their own needs.
+    The users are granted access again based on a valid token.
+    """
+
     src_ip = pw.IPField(null=False)
     token = pw.ForeignKeyField(Tokens, null=False, backref='accessrequests')
+    was_scrubbed = pw.BooleanField(default=False)
