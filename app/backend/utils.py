@@ -44,10 +44,11 @@ def is_valid_uuid(token: str) -> bool:
 
 def is_valid_ip(ip_addr: str) -> bool:
     try:
-        resp_ip = parse_ip(ip_addr)
+        parse_ip(ip_addr)
+        isvalid = True
     except ParseIPError:
-        resp_ip = False
-    return bool(resp_ip)
+        isvalid = False
+    return isvalid
 
 
 def parse_host(hostnameport: str) -> Tuple[str, str]:
