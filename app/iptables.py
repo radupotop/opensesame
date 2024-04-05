@@ -40,6 +40,13 @@ class IPTables:
             input_chain.append_rule(input_rule)
             log.info('Added INPUT chain rule for %s:%s', port, protocol)
 
+        # Add rule for allowing the opensesame API
+        accept_self = self.build_inbound_rule(
+            self.config.api_port, 'tcp', always_accept=True
+        )
+        input_chain.append_rule(accept_self)
+        log.info('Added INPUT chain rule for SELF %s:%s', self.config.api_port, 'tcp')
+
         if set_policy_drop:
             log.warning('Setting the INPUT chain Policy to DROP')
             input_chain.set_policy(iptc.Policy.DROP)
@@ -50,7 +57,9 @@ class IPTables:
         """
         self.chain = iptc.Chain(self.filter_table, self.config.chain)
 
-    def build_inbound_rule(self, port: str, protocol: str = 'all') -> iptc.Rule:
+    def build_inbound_rule(
+        self, port: str, protocol: str, always_accept: bool = False
+    ) -> iptc.Rule:
         """
         Build an inbound rule for port:protocol which will jump to the whitelist chain.
 
@@ -63,7 +72,8 @@ class IPTables:
         rule_match = iptc.Match(input_rule, protocol)
         rule_match.dport = str(port)
         input_rule.add_match(rule_match)
-        input_rule.target = iptc.Target(input_rule, self.config.chain)
+        jump_to = iptc.Policy.ACCEPT if always_accept else self.config.chain
+        input_rule.target = iptc.Target(input_rule, jump_to)
         log.debug('Built inbound rule for %s,%s', port, protocol)
 
         return input_rule
