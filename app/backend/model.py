@@ -2,7 +2,7 @@ from datetime import datetime
 
 import peewee as pw
 
-from app.db import db
+from app.backend.db import db
 
 
 class BaseModel(pw.Model):

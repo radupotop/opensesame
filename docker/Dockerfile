@@ -14,5 +14,5 @@ RUN pip install /wheels/*
 COPY . /app
 WORKDIR /app
 RUN pip install .
-CMD python utils/bootstrap.py && python api/run.py
+CMD python app/bootstrap/bootstrap.py && python app/api/run.py
 EXPOSE 8080

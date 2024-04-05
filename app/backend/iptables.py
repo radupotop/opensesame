@@ -2,9 +2,9 @@ from typing import List
 
 import iptc
 
-from app.config import ConfigReader
-from app.logging import get_logger
-from app.utils import parse_ip, parse_port
+from app.backend.config import ConfigReader
+from app.backend.logging import get_logger
+from app.backend.utils import parse_ip, parse_port
 
 log = get_logger(__name__)
 

@@ -1,9 +1,9 @@
 import iptc
 import pytest
-from app.config import ConfigReader
-from app.exceptions import ParseIPError
-from app.iptables import IPTables
-from app.utils import parse_port
+from app.backend.config import ConfigReader
+from app.backend.exceptions import ParseIPError
+from app.backend.iptables import IPTables
+from app.backend.utils import parse_port
 
 
 class TestIPTables:

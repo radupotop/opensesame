@@ -1,11 +1,11 @@
 from werkzeug.serving import run_simple
 from werkzeug.wrappers import Request, Response
 
-from app.config import ConfigReader
-from app.iptables import IPTables
-from app.logging import get_logger
-from app.storage import Storage
-from app.utils import is_valid_ip, is_valid_uuid, parse_host, resolve_hostname
+from app.backend.config import ConfigReader
+from app.backend.iptables import IPTables
+from app.backend.logging import get_logger
+from app.backend.storage import Storage
+from app.backend.utils import is_valid_ip, is_valid_uuid, parse_host, resolve_hostname
 
 storage = Storage()
 log = get_logger(__name__)

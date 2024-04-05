@@ -2,9 +2,9 @@ from datetime import datetime, timedelta
 from typing import Tuple, Optional
 from uuid import uuid4
 
-from app.db import db
-from app.model import AccessRequests, Tokens
-from app.utils import parse_ip
+from app.backend.db import db
+from app.backend.model import AccessRequests, Tokens
+from app.backend.utils import parse_ip
 
 
 class Storage:

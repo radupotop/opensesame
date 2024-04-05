@@ -1,7 +1,7 @@
-from app.config import ConfigReader
-from app.db import db
-from app.iptables import IPTables
-from app.model import AccessRequests, Tokens
+from app.backend.config import ConfigReader
+from app.backend.db import db
+from app.backend.iptables import IPTables
+from app.backend.model import AccessRequests, Tokens
 
 
 def create_db():

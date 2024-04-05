@@ -1,4 +1,4 @@
-from app.config import ConfigReader
+from app.backend.config import ConfigReader
 
 
 def test_config():

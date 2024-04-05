@@ -3,8 +3,8 @@ from ipaddress import ip_address
 from typing import Tuple
 from uuid import UUID
 
-from app.exceptions import ParseIPError
-from app.logging import get_logger
+from app.backend.exceptions import ParseIPError
+from app.backend.logging import get_logger
 
 log = get_logger(__name__)
 
