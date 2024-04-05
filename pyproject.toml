@@ -7,7 +7,7 @@ fix = true
 lint.unfixable = ["F401"] # unused imports
 
 [tool.ruff.format]
-quote-style = "preserve"
+quote-style = "single"
 indent-style = "space"
 skip-magic-trailing-comma = false
 line-ending = "lf"
