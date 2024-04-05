@@ -50,4 +50,11 @@ def is_valid_ip(ip_addr: str) -> bool:
     return bool(resp_ip)
 
 
-parse_host = parse_port
+def parse_host(hostnameport: str) -> Tuple[str, str]:
+    """
+    Parse a hostname:port pair from the request headers.
+    """
+    hp = hostnameport.split(':', 1)
+    if len(hp) == 1:
+        return hp[0], ''
+    return hp
