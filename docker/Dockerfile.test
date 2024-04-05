@@ -16,5 +16,6 @@ RUN pip install -r requirements.test.txt
 COPY . /opt/app
 
 RUN pip install --no-cache-dir -e .[tests]
+RUN mkdir /db
 
 CMD pytest -svv

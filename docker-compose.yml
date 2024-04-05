@@ -17,7 +17,3 @@ services:
     cap_add:
       - NET_ADMIN
       - NET_RAW
-    volumes:
-      - test_db:/db
-volumes:
-  test_db:
