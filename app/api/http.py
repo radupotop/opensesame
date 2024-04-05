@@ -1,3 +1,5 @@
+from http import HTTPStatus as hs
+
 from werkzeug.serving import run_simple
 from werkzeug.wrappers import Request, Response
 
@@ -19,7 +21,7 @@ def build_response(message: str, code: int):
 
 
 def bad_token():
-    return build_response('"Could not verify access token."', code=403)
+    return build_response('"Could not verify access token."', code=hs.FORBIDDEN)
 
 
 @Request.application
@@ -27,6 +29,9 @@ def application(request):
     """
     Define the WSGI application to be run by the server.
     """
+    if request.path.startswith('/favicon'):
+        return build_response(None, code=hs.NO_CONTENT)
+
     cfg = ConfigReader()
     ipt = IPTables(cfg)
 
@@ -47,11 +52,11 @@ def application(request):
             storage.log_access_request(src_ip, token_instance)
             log.info('Allowing inbound traffic from new IP: %s', src_ip)
             return build_response(
-                f'"Allowing inbound traffic from new IP: {src_ip}"', code=201
+                f'"Allowing inbound traffic from new IP: {src_ip}"', code=hs.CREATED
             )
         log.info('Allowing inbound traffic from existing IP: %s', src_ip)
         return build_response(
-            f'"Allowing inbound traffic from existing IP: {src_ip}"', code=200
+            f'"Allowing inbound traffic from existing IP: {src_ip}"', code=hs.OK
         )
     else:
         log.warning('Invalid Token: %s', token)
