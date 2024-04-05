@@ -1,7 +1,7 @@
 import iptc
 from werkzeug.test import Client
 
-from app.api.http import application
+from app.api.web import application
 from app.backend.config import ConfigReader
 from app.backend.iptables import IPTables
 from app.backend.storage import Storage

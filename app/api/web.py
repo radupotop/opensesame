@@ -1,6 +1,5 @@
 from http import HTTPStatus as hs
 
-from werkzeug.serving import run_simple
 from werkzeug.wrappers import Request, Response
 
 from app.backend.config import ConfigReader
@@ -61,11 +60,3 @@ def application(request):
     else:
         log.warning('Invalid Token: %s', token)
         return bad_token()
-
-
-def run_main(cfg):
-    """
-    Convenience method. Run a simple server and load the app.
-    """
-    log.info('Started OpenSesame %s:%s', cfg.api_host, cfg.api_port)
-    run_simple(cfg.api_host, int(cfg.api_port), application)
