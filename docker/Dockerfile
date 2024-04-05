@@ -1,14 +1,15 @@
+FROM python:3.11.8-slim AS base
+RUN apt-get update && apt-get -y install iptables
+
 # Builder
-FROM python:3.11.8-slim AS builder
-RUN apt-get update && apt-get -y install gcc iptables
+FROM base AS builder
+RUN apt-get -y install gcc
 COPY . /app
 WORKDIR /app
 RUN pip wheel . -w /wheels/
 
-
 # Runner
-FROM python:3.11.8-slim
-RUN apt-get update && apt-get -y install iptables
+FROM base AS runner
 COPY --from=builder /wheels /wheels
 RUN pip install /wheels/*
 COPY . /app
