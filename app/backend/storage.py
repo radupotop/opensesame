@@ -64,7 +64,6 @@ class Storage:
         Add an entry to the access request log.
         """
         success = AccessRequests.insert(
-            timestamp=datetime.utcnow(),
             src_ip=parse_ip(src_ip),
             token=token_id,
         ).execute()
