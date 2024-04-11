@@ -2,9 +2,9 @@ from pathlib import Path
 from setuptools import setup, find_packages
 
 
-def read_requirements(filename):
-    contents = Path(filename).read_text().strip('\n')
-    return [line for line in contents.split('\n') if not line.startswith('-')]
+def read_requirements(filename) -> list:
+    reqlist = Path(filename).read_text().splitlines()
+    return list(filter(lambda line: '==' in line, reqlist))
 
 
 setup(
