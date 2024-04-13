@@ -14,7 +14,11 @@ class Storage:
     """
 
     def __init__(self, db: Database):
-        self.conn = db.connect(reuse_if_open=True)
+        self.conn = db
+        db.connect(reuse_if_open=True)
+
+    def get_db(self) -> Database:
+        return self.conn
 
     def _today(self):
         return datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0)

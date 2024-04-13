@@ -5,7 +5,10 @@ from peewee import Database, SqliteDatabase
 
 
 @cache
-def get_db(path: str) -> Database:
+def init_db(path: str) -> Database:
+    """
+    Singleton to init database from file.
+    """
     if not Path(path).is_file():
         raise RuntimeError('Database file not found')
     return SqliteDatabase(path)
