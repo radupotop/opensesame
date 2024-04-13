@@ -1,6 +1,5 @@
 from datetime import datetime, timedelta
-from typing import Optional, Tuple
-from uuid import uuid4
+from uuid import UUID, uuid4
 
 from peewee import Database
 
@@ -20,10 +19,10 @@ class Storage:
     def get_db(self) -> Database:
         return self.conn
 
-    def _today(self):
+    def _today(self) -> datetime:
         return datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0)
 
-    def add_token(self, expiry_days: int = None) -> Tuple:
+    def add_token(self, expiry_days: int = None) -> tuple[UUID, datetime | None]:
         """
         Generate UUID4 tokens.
         """
@@ -37,7 +36,7 @@ class Storage:
 
         return _value, _expires
 
-    def verify_token(self, value: str) -> Optional[Tokens]:
+    def verify_token(self, value: str) -> Tokens | None:
         token = (
             Tokens.select()
             .where(Tokens.value == value)
@@ -63,7 +62,7 @@ class Storage:
         token = Tokens.delete().where(Tokens.value == value).execute()
         return bool(token)
 
-    def log_access_request(self, src_ip: str, token_id: int):
+    def log_access_request(self, src_ip: str, token_id: int) -> bool:
         """
         Add an entry to the access request log.
         """
