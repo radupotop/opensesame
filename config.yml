@@ -14,3 +14,4 @@ set_input_policy_drop: false
 # API Host and Port
 api_host: "0.0.0.0"
 api_port: 8080
+database_path: /db/tokens.db

@@ -2,7 +2,6 @@ from werkzeug.serving import run_simple
 
 from app.api.web import application
 from app.backend.config import ConfigReader
-from app.backend.iptables import IPTables
 from app.backend.logging import get_logger
 
 log = get_logger('app.api.run')
@@ -18,8 +17,4 @@ def run_main(cfg):
 
 if __name__ == '__main__':
     cfg = ConfigReader()
-    ipt = IPTables(cfg)
-
-    # ipt.get_chain()
-    # ipt.add_rule('192.168.1.6')
     run_main(cfg)

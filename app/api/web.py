@@ -2,13 +2,10 @@ from http import HTTPStatus as hs
 
 from werkzeug.wrappers import Request, Response
 
-from app.backend.config import ConfigReader
-from app.backend.iptables import IPTables
+from app.api import init
 from app.backend.logging import get_logger
-from app.backend.storage import Storage
 from app.backend.utils import is_valid_ip, is_valid_uuid, parse_host, resolve_hostname
 
-storage = Storage()
 log = get_logger(__name__)
 
 
@@ -31,9 +28,6 @@ def application(request):
     if request.path.startswith('/favicon'):
         return build_response(None, code=hs.NO_CONTENT)
 
-    cfg = ConfigReader()
-    ipt = IPTables(cfg)
-
     token = request.args.get('token')
     hostname, _ = parse_host(request.host)
     src_ip = resolve_hostname(request.remote_addr or hostname)
@@ -42,6 +36,7 @@ def application(request):
         log.warning('Invalid Token <%s> or SRC IP <%s>', token, src_ip)
         return bad_token()
 
+    _, storage, ipt = init()
     token_instance = storage.verify_token(token)
 
     if token_instance:

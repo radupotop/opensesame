@@ -1,3 +1,11 @@
-from peewee import SqliteDatabase
+from functools import cache
+from pathlib import Path
 
-db = SqliteDatabase('/db/tokens.db')
+from peewee import Database, SqliteDatabase
+
+
+@cache
+def get_db(path: str) -> Database:
+    if not Path(path).is_file():
+        raise RuntimeError('Database file not found')
+    return SqliteDatabase(path)

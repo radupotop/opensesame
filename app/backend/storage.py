@@ -1,8 +1,9 @@
 from datetime import datetime, timedelta
-from typing import Tuple, Optional
+from typing import Optional, Tuple
 from uuid import uuid4
 
-from app.backend.db import db
+from peewee import Database
+
 from app.backend.model import AccessRequests, Tokens
 from app.backend.utils import parse_ip
 
@@ -12,7 +13,7 @@ class Storage:
     Storage abstracts away common operations done on the SQL db.
     """
 
-    def __init__(self):
+    def __init__(self, db: Database):
         self.conn = db.connect(reuse_if_open=True)
 
     def _today(self):
