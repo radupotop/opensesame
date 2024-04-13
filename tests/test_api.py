@@ -1,20 +1,13 @@
 import iptc
 from werkzeug.test import Client
 
+from app.api import init
 from app.api.web import application
-from app.backend.config import ConfigReader
-from app.backend.iptables import IPTables
-from app.backend.storage import Storage
-from app.bootstrap.bootstrap import create_db
-
-create_db()
-storage = Storage()
 
 
 class TestAPI:
     def setup_class(self):
-        self.cfg = ConfigReader()
-        ipt = IPTables(self.cfg)
+        storage, ipt, self.cfg = init()
         ipt.setup_whitelist_chain()
         self.client = Client(application)
         self.token = storage.add_token()

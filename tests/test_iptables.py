@@ -1,15 +1,14 @@
 import iptc
 import pytest
-from app.backend.config import ConfigReader
+
+from app.api import init
 from app.backend.exceptions import ParseIPError
-from app.backend.iptables import IPTables
 from app.backend.utils import parse_port
 
 
 class TestIPTables:
     def setup_class(self):
-        self.cfg = ConfigReader()
-        self.ipt = IPTables(self.cfg)
+        _, self.ipt, self.cfg = init()
         self.filter_table = iptc.Table(iptc.Table.FILTER)
 
     def test_setup_chain(self):

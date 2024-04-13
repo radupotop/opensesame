@@ -2,11 +2,9 @@ from datetime import datetime, timedelta
 
 import pytest
 
-from app.backend.storage import Storage
-from app.bootstrap.bootstrap import create_db
+from app.api import init
 
-create_db()
-storage = Storage()
+storage, _, _ = init()
 
 
 class TestToken:
