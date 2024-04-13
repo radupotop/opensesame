@@ -2,14 +2,15 @@ from datetime import datetime
 
 import peewee as pw
 
-from app.api import init
+from app.backend.config import ConfigReader
+from app.backend.db import init_db
 
-storage, _, _ = init()
+cfg = ConfigReader()
 
 
 class BaseModel(pw.Model):
     class Meta:
-        database = storage.get_db()
+        database = init_db(cfg.database_path)
 
     id = pw.AutoField()
     created = pw.DateTimeField(default=datetime.utcnow)
