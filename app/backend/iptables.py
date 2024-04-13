@@ -1,5 +1,3 @@
-from typing import List
-
 import iptc
 
 from app.backend.config import ConfigReader
@@ -95,7 +93,7 @@ class IPTables:
         log.info('Allowing inbound traffic from SRC IP: %s', src_ip)
         return True
 
-    def _lookup_rules(self, src_ip: str) -> List[iptc.Rule]:
+    def _lookup_rules(self, src_ip: str) -> list[iptc.Rule]:
         ipaddr = parse_ip(src_ip)
         return [rule for rule in self.chain.rules if ipaddr == rule.src.split('/')[0]]
 

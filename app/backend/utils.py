@@ -1,6 +1,5 @@
 import socket
 from ipaddress import ip_address
-from typing import Tuple
 from uuid import UUID
 
 from app.backend.exceptions import ParseIPError
@@ -25,7 +24,7 @@ def resolve_hostname(hostname: str) -> str:
     return resolved_ip
 
 
-def parse_port(entry: str) -> Tuple[str, str]:
+def parse_port(entry: str) -> tuple[str, str]:
     """
     Parse a port:protocol entry from the config.
     """
@@ -51,7 +50,7 @@ def is_valid_ip(ip_addr: str) -> bool:
     return isvalid
 
 
-def parse_host(hostnameport: str) -> Tuple[str, str]:
+def parse_host(hostnameport: str) -> tuple[str, str]:
     """
     Parse a hostname:port pair from the request headers.
     """
