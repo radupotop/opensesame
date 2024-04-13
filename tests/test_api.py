@@ -3,11 +3,13 @@ from werkzeug.test import Client
 
 from app.api import init
 from app.api.web import application
+from app.bootstrap.bootstrap import create_db
 
 
 class TestAPI:
     def setup_class(self):
         storage, ipt, self.cfg = init()
+        create_db(storage.get_db())
         ipt.setup_whitelist_chain()
         self.client = Client(application)
         self.token = storage.add_token()

@@ -3,8 +3,10 @@ from datetime import datetime, timedelta
 import pytest
 
 from app.api import init
+from app.bootstrap.bootstrap import create_db
 
 storage, _, _ = init()
+create_db(storage.get_db())
 
 
 class TestToken:
