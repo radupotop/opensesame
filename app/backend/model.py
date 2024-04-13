@@ -4,7 +4,7 @@ import peewee as pw
 
 from app.api import init
 
-_, storage, _ = init()
+storage, _, _ = init()
 
 
 class BaseModel(pw.Model):

@@ -36,7 +36,7 @@ def application(request):
         log.warning('Invalid Token <%s> or SRC IP <%s>', token, src_ip)
         return bad_token()
 
-    _, storage, ipt = init()
+    storage, ipt, _ = init()
     token_instance = storage.verify_token(token)
 
     if token_instance:

@@ -7,7 +7,7 @@ from app.backend.storage import Storage
 
 
 @cache
-def init(config_file='config.yml') -> tuple[ConfigReader, Storage, IPTables]:
+def init(config_file='config.yml') -> tuple[Storage, IPTables, ConfigReader]:
     """
     Singleton init function to be reused across the app.
     """
@@ -15,4 +15,4 @@ def init(config_file='config.yml') -> tuple[ConfigReader, Storage, IPTables]:
     active_db = init_db(cfg.database_path)
     storage = Storage(active_db)
     ipt = IPTables(cfg)
-    return cfg, storage, ipt
+    return storage, ipt, cfg

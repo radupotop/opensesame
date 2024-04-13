@@ -15,6 +15,6 @@ def create_chains(cfg, ipt):
 
 
 if __name__ == '__main__':
-    cfg, storage, ipt = init()
+    storage, ipt, cfg = init()
     create_db(storage.conn)
     create_chains(cfg, ipt)
