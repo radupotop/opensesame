@@ -109,6 +109,8 @@ class IPTables:
         """
         Drop a rule from the opensesame chain.
         """
+        if not hasattr(self, 'chain'):
+            self.get_chain()
         found_rules = self._lookup_rules(src_ip)
         for rule in found_rules:
             self.chain.delete_rule(rule)

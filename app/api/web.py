@@ -37,9 +37,9 @@ def application(request):
         return bad_token()
 
     storage, ipt, _ = init()
-    token_instance = storage.verify_token(token)
+    token_instance = storage.get_token(token)
 
-    if token_instance:
+    if token_instance and token_instance.is_valid:
         ipt.get_chain()
         if not ipt.has_rule(src_ip):
             ipt.add_rule(src_ip)
@@ -52,6 +52,11 @@ def application(request):
         return build_response(
             f'"Allowing inbound traffic from existing IP: {src_ip}"', code=hs.OK
         )
+    elif token_instance:
+        log.warning('Token expired: %s', token)
+        # Try to cleanup iptables
+        ipt.delete_rule(src_ip)
+        return bad_token()
     else:
         log.warning('Invalid Token: %s', token)
         return bad_token()
