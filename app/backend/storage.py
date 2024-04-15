@@ -59,6 +59,7 @@ class Storage:
         token = (
             Tokens.update({Tokens.expires: self._today()})
             .where(Tokens.value == value)
+            .where((Tokens.expires.is_null()) | (Tokens.expires > datetime.utcnow()))
             .execute()
         )
         return bool(token)
