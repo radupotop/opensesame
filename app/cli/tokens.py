@@ -16,16 +16,17 @@ if __name__ == '__main__':
     # Main commands
     add_tokens = subparsers.add_parser(
         'add',
-        help='Add tokens',
+        help='Generate a new token',
     )
     exp_tokens = subparsers.add_parser(
         'exp',
-        help='Expire tokens',
+        help='Expire a token',
     )
     check_tokens = subparsers.add_parser(
         'check',
-        help='Check if token exists',
+        help='Check if a token exists',
     )
+    ### Sub-commands ###
     # Add sub-command
     add_tokens.add_argument(
         '--expires-days',
@@ -50,10 +51,12 @@ if __name__ == '__main__':
         help='Token UUID to expire',
     )
     args = parser.parse_args()
-    log.info('Arguments: %s', args)
+    # log.info('Arguments: %s', args)
+    # ADD
     if args.maincmd == 'add':
         ret = storage.add_token(args.expires_days, args.reason)
         log.info('Added token %s, expires=%s', *ret)
+    # CHECK
     if args.maincmd == 'check':
         tok = storage.get_token(args.uuid)
         if tok and tok.is_valid:
@@ -71,6 +74,7 @@ if __name__ == '__main__':
             )
         else:
             log.info('Token NOT FOUND!')
+    # EXPIRE
     if args.maincmd == 'exp':
         ret = storage.expire_token(args.uuid)
         log.info('Token is now expired=%s', ret)
