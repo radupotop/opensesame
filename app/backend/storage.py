@@ -25,7 +25,11 @@ class Storage:
     def _today(self) -> datetime:
         return datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0)
 
-    def add_token(self, expiry_days: int = None) -> tuple[UUID, datetime | None]:
+    def add_token(
+        self,
+        expiry_days: int = None,
+        reason: str = None,
+    ) -> tuple[UUID, datetime | None]:
         """
         Generate UUID4 tokens.
         """
@@ -35,7 +39,7 @@ class Storage:
         if expiry_days:
             _expires = self._today() + timedelta(days=expiry_days)
 
-        Tokens.insert(value=_value, expires=_expires).execute()
+        Tokens.insert(value=_value, expires=_expires, reason=reason).execute()
 
         return _value, _expires
 
