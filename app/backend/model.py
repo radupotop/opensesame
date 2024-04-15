@@ -22,6 +22,10 @@ class Tokens(BaseModel):
     expires = pw.DateTimeField(null=True)
     reason = pw.CharField(null=True)  # Can be an external_id
 
+    @property
+    def is_valid(self) -> bool:
+        return not self.expires or self.expires > datetime.utcnow()
+
 
 class AccessRequests(BaseModel):
     """

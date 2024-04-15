@@ -25,7 +25,11 @@ class Storage:
     def _today(self) -> datetime:
         return datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0)
 
-    def add_token(self, expiry_days: int = None) -> tuple[UUID, datetime | None]:
+    def add_token(
+        self,
+        expiry_days: int = None,
+        reason: str = None,
+    ) -> tuple[UUID, datetime | None]:
         """
         Generate UUID4 tokens.
         """
@@ -35,17 +39,18 @@ class Storage:
         if expiry_days:
             _expires = self._today() + timedelta(days=expiry_days)
 
-        Tokens.insert(value=_value, expires=_expires).execute()
+        Tokens.insert(value=_value, expires=_expires, reason=reason).execute()
 
         return _value, _expires
 
+    def get_token(self, value: str) -> Tokens | None:
+        return Tokens.select().where(Tokens.value == value).get_or_none()
+
     def verify_token(self, value: str) -> Tokens | None:
-        token = (
-            Tokens.select()
-            .where(Tokens.value == value)
-            .where((Tokens.expires.is_null()) | (Tokens.expires > datetime.utcnow()))
-        )
-        return token.first()  # get_or_none doesn't work on SelectQuery
+        token = self.get_token(value)
+        if token and token.is_valid:
+            return token
+        return None
 
     def expire_token(self, value: str) -> bool:
         """
@@ -54,6 +59,7 @@ class Storage:
         token = (
             Tokens.update({Tokens.expires: self._today()})
             .where(Tokens.value == value)
+            .where((Tokens.expires.is_null()) | (Tokens.expires > datetime.utcnow()))
             .execute()
         )
         return bool(token)

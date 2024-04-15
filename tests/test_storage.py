@@ -5,7 +5,7 @@ import pytest
 from app.api import init
 from app.bootstrap.bootstrap import create_db
 
-storage, _, _ = init()
+storage, _, _ = init(with_ipt=False)
 create_db(storage.get_db())
 
 
