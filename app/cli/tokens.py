@@ -18,16 +18,15 @@ if __name__ == '__main__':
         'add',
         help='Add tokens',
     )
-    rm_tokens = subparsers.add_parser(
-        'rm',
-        help='Remove tokens',
-        aliases=['del'],
+    exp_tokens = subparsers.add_parser(
+        'exp',
+        help='Expire tokens',
     )
     check_tokens = subparsers.add_parser(
         'check',
         help='Check if token exists',
     )
-    # Sub-commands
+    # Add sub-command
     add_tokens.add_argument(
         '--expires-days',
         type=int,
@@ -38,11 +37,17 @@ if __name__ == '__main__':
         type=str,
         help='Reason for granting access',
     )
-    # Check
+    # Check sub-command
     check_tokens.add_argument(
         'uuid',
         type=UUID,
-        help='Token UUID',
+        help='Token UUID to check',
+    )
+    # Expire sub-command
+    exp_tokens.add_argument(
+        'uuid',
+        type=UUID,
+        help='Token UUID to expire',
     )
     args = parser.parse_args()
     log.info('Arguments: %s', args)
@@ -50,13 +55,22 @@ if __name__ == '__main__':
         ret = storage.add_token(args.expires_days, args.reason)
         log.info('Added token %s, expires=%s', *ret)
     if args.maincmd == 'check':
-        tok = storage.verify_token(args.uuid)
-        if tok:
+        tok = storage.get_token(args.uuid)
+        if tok and tok.is_valid:
             log.info(
                 'Token Valid %s → %s, Reason: %s',
                 tok.created,
                 tok.expires or 'Unlimited',
                 tok.reason,
             )
+        elif tok:
+            log.info(
+                'Token Expired %s, Reason: %s',
+                tok.expires,
+                tok.reason,
+            )
         else:
             log.info('Token NOT FOUND!')
+    if args.maincmd == 'exp':
+        ret = storage.expire_token(args.uuid)
+        log.info('Token is now expired=%s', ret)

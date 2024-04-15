@@ -43,13 +43,14 @@ class Storage:
 
         return _value, _expires
 
+    def get_token(self, value: str) -> Tokens | None:
+        return Tokens.select().where(Tokens.value == value).get_or_none()
+
     def verify_token(self, value: str) -> Tokens | None:
-        token = (
-            Tokens.select()
-            .where(Tokens.value == value)
-            .where((Tokens.expires.is_null()) | (Tokens.expires > datetime.utcnow()))
-        )
-        return token.first()  # get_or_none doesn't work on SelectQuery
+        token = self.get_token(value)
+        if token and token.is_valid:
+            return token
+        return None
 
     def expire_token(self, value: str) -> bool:
         """
