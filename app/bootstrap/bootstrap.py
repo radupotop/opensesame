@@ -9,12 +9,12 @@ def create_db(db: Database):
     db.close()
 
 
-def create_chains(cfg, ipt):
+def create_chains(ipt, cfg):
     ipt.setup_whitelist_chain()
     ipt.setup_input_chain(set_policy_drop=cfg.set_input_policy_drop)
 
 
 if __name__ == '__main__':
     storage, ipt, cfg = init()
-    create_db(storage.conn)
-    create_chains(cfg, ipt)
+    create_db(storage.get_db())
+    create_chains(ipt, cfg)

@@ -17,6 +17,9 @@ class Storage:
         db.connect(reuse_if_open=True)
 
     def get_db(self) -> Database:
+        """
+        Get the active db.
+        """
         return self.conn
 
     def _today(self) -> datetime:

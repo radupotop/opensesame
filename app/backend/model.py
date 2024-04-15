@@ -5,6 +5,7 @@ import peewee as pw
 from app.backend.config import ConfigReader
 from app.backend.db import init_db
 
+# Cannot use api.init() here due to circular deps with Storage.
 cfg = ConfigReader()
 
 
