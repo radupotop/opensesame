@@ -20,6 +20,10 @@ def bad_token():
     return build_response('"Could not verify access token."', code=hs.FORBIDDEN)
 
 
+def expired_token():
+    return build_response('"Token has expired."', code=hs.FORBIDDEN)
+
+
 @Request.application
 def application(request):
     """
@@ -56,7 +60,7 @@ def application(request):
         log.warning('Token expired: %s', token)
         # Try to cleanup iptables
         ipt.delete_rule(src_ip)
-        return bad_token()
+        return expired_token()
     else:
         log.warning('Invalid Token: %s', token)
         return bad_token()

@@ -55,7 +55,7 @@ if __name__ == '__main__':
     # ADD
     if args.maincmd == 'add':
         ret = storage.add_token(args.expires_days, args.reason)
-        log.info('Added token %s, expires=%s', *ret)
+        log.info('Added token %s expires=%s', *ret)
     # CHECK
     if args.maincmd == 'check':
         tok = storage.get_token(args.uuid)
