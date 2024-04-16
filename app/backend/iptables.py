@@ -15,6 +15,16 @@ class IPTables:
     def __init__(self, config: ConfigReader):
         self.config = config
         self.filter_table = iptc.Table(iptc.Table.FILTER)
+        self.set_chain()
+
+    def set_chain(self):
+        """
+        Assume the whitelist chain exists and set it.
+        This does NOT create the chain and will not error if it doesn't exist.
+        Use setup_whitelist_chain for that.
+        """
+        log.info('Whitelist chain: %s', self.config.chain)
+        self.chain = iptc.Chain(self.filter_table, self.config.chain)
 
     def setup_whitelist_chain(self):
         """
@@ -51,12 +61,6 @@ class IPTables:
             log.warning('Setting the INPUT chain Policy to DROP')
             input_chain.set_policy(iptc.Policy.DROP)
 
-    def get_chain(self):
-        """
-        Get the opensesame chain.
-        """
-        self.chain = iptc.Chain(self.filter_table, self.config.chain)
-
     def build_inbound_rule(
         self, port: str, protocol: str, always_accept: bool = False
     ) -> iptc.Rule:
@@ -84,8 +88,6 @@ class IPTables:
         Example:
             iptables -A opensesame -s SRC_IP -j ACCEPT
         """
-        if not hasattr(self, 'chain'):
-            self.get_chain()
         rule = iptc.Rule()
         rule.src = parse_ip(src_ip)
         rule.target = iptc.Target(rule, iptc.Policy.ACCEPT)
@@ -109,8 +111,6 @@ class IPTables:
         """
         Drop a rule from the opensesame chain.
         """
-        if not hasattr(self, 'chain'):
-            self.get_chain()
         found_rules = self._lookup_rules(src_ip)
         for rule in found_rules:
             self.chain.delete_rule(rule)

@@ -44,7 +44,6 @@ def application(request):
     token_instance = storage.get_token(token)
 
     if token_instance and token_instance.is_valid:
-        ipt.get_chain()
         if not ipt.has_rule(src_ip):
             ipt.add_rule(src_ip)
             storage.log_access_request(src_ip, token_instance)
