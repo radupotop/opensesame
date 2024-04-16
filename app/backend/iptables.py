@@ -23,7 +23,7 @@ class IPTables:
         This does NOT create the chain and will not error if it doesn't exist.
         Use setup_whitelist_chain for that.
         """
-        log.info('Whitelist chain: %s', self.config.chain)
+        log.debug('Whitelist chain: %s', self.config.chain)
         self.chain = iptc.Chain(self.filter_table, self.config.chain)
 
     def setup_whitelist_chain(self):
