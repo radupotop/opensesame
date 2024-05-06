@@ -9,7 +9,7 @@ def read_requirements(filename) -> list:
 
 setup(
     name='OpenSesame',
-    version='0.4.3',
+    version='0.4.4',
     packages=find_packages(),
     install_requires=read_requirements('requirements.txt'),
     extras_require=dict(tests=read_requirements('requirements.test.txt')),
