@@ -2,25 +2,19 @@
 #    uv pip compile requirements.in requirements.test.in
 freezegun==1.5.0
     # via pytest-freezegun
-gunicorn==22.0.0
 iniconfig==2.0.0
     # via pytest
-markupsafe==2.1.5
-    # via werkzeug
 packaging==24.0
-    # via
-    #   gunicorn
-    #   pytest
-peewee==3.17.3
+    # via pytest
 pluggy==1.5.0
     # via pytest
 pytest==8.2.0
-    # via pytest-freezegun
+    # via
+    #   -r requirements.test.in
+    #   pytest-freezegun
 pytest-freezegun==0.4.2
+    # via -r requirements.test.in
 python-dateutil==2.9.0.post0
     # via freezegun
-python-iptables==1.0.1
-pyyaml==6.0.1
 six==1.16.0
     # via python-dateutil
-werkzeug==3.0.3
